@@ -1,60 +1,56 @@
 package com.api.naver.smartstore.controller;
 
 
-import com.api.naver.smartstore.crypto.CryptoUtils;
-import com.api.naver.smartstore.dto.OrderDetailRequest;
-import com.api.naver.smartstore.dto.TokenResponse;
-import com.api.naver.smartstore.service.MainService;
+import com.api.naver.smartstore.service.template.common.ApplicationResponse;
+import com.api.naver.smartstore.service.template.common.ApplicationResult;
+import com.api.naver.smartstore.service.template.common.NaverCommerceTemplate;
+import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
+import com.api.naver.smartstore.service.template.request.ProductOrderIdsRequest;
+import com.api.naver.smartstore.service.template.request.ProductOrdersRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class MainController {
+    private final NaverCommerceTemplate naverCommerceTemplate;
 
-    public static Map<String, String> map = new HashMap<>();
-    private final MainService mainService;
-    private final ObjectMapper objectMapper;
-
-    public MainController(MainService mainService, ObjectMapper objectMapper) {
-        this.mainService = mainService;
-        this.objectMapper = objectMapper;
+    public MainController(NaverCommerceTemplate naverCommerceTemplate) {
+        this.naverCommerceTemplate = naverCommerceTemplate;
+    }
+    @GetMapping("/order/{shoppingMall}")
+    public ApplicationResponse<NaverCommonResponse> getOrderInfo(
+            @PathVariable("shoppingMall") String shoppingMall,
+            @RequestParam("orderId") String orderId
+    ) throws JsonProcessingException {
+        return ApplicationResponse.<NaverCommonResponse>builder()
+                .result(
+                        ApplicationResult.builder()
+                                .code(HttpStatus.OK.value())
+                                .message("주문 정보 조회에 성공했습니다.")
+                                .build()
+                )
+                .payload(
+                        naverCommerceTemplate.execute(shoppingMall, new ProductOrderIdsRequest(orderId))
+                )
+                .build();
     }
 
-    /**
-     * clientId와 ClientSecret키는 추후에 등록시 DB넣는 형식으로 해서 가져와야 할 것 같음
-     */
-    @GetMapping("/token")
-    public String getToken() throws JsonProcessingException {
-        String clientId = "2NcVTI6acZnnWZcjbZNsD4";
-        String clientSecret = "$2a$04$69VomQ67OctjHL1LuJGBPO";
-
-        String jsonToken = mainService.getToken(clientId, clientSecret);
-        TokenResponse tokenResponse = objectMapper.readValue(jsonToken, TokenResponse.class);
-
-        map.put("token",tokenResponse.getAccess_token());
-        return jsonToken;
-    }
-
-    @GetMapping("/order/{orderId}")
-    public String getOrderInfo(
-            @PathVariable("orderId") String orderId
-    ) {
-        return mainService.getOrderInfo(map.get("token"), orderId);
-    }
-
-    @PostMapping("/orderDetail")
-    public String getOrderDetail(
-            @RequestBody OrderDetailRequest orderDetailRequest
-    ) {
-        try {
-            return mainService.getOrderInfoDetail(map.get("token"), orderDetailRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "알 수 없는 에러 발생";
-        }
+    @PostMapping("/orderDetail/{shoppingMall}")
+    public ApplicationResponse<NaverCommonResponse> getOrderDetail(
+            @PathVariable("shoppingMall") String shoppingMall,
+            @RequestBody ProductOrdersRequest productOrdersRequest
+    ) throws JsonProcessingException {
+        return ApplicationResponse.<NaverCommonResponse>builder()
+                .result(
+                        ApplicationResult.builder()
+                                .code(HttpStatus.OK.value())
+                                .message("주문 정보 조회에 성공했습니다.")
+                                .build()
+                )
+                .payload(
+                        naverCommerceTemplate.execute(shoppingMall, productOrdersRequest)
+                )
+                .build();
     }
 }
