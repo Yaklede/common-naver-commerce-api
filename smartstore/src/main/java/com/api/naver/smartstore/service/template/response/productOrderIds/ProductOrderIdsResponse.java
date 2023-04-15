@@ -3,6 +3,7 @@ package com.api.naver.smartstore.service.template.response.productOrderIds;
 import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
 import com.api.naver.smartstore.service.template.enumeration.ServiceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

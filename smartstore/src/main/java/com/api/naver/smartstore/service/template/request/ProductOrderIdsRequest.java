@@ -7,10 +7,12 @@ import com.api.naver.smartstore.service.template.response.productOrderIds.Produc
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProductOrderIdsRequest implements NaverCommonRequest {
 
@@ -28,12 +30,5 @@ public class ProductOrderIdsRequest implements NaverCommonRequest {
     public String findUrl() {
         return "https://api.commerce.naver.com/external/v1/pay-order/seller/orders/"+orderId+"/product-order-ids";
     }
-
-    @Override
-    public Class<? extends NaverCommonResponse> findResponseType() {
-        return ProductOrderIdsResponse.class;
-    }
-
-
     private String orderId;
 }

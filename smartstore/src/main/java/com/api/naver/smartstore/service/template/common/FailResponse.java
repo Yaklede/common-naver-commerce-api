@@ -2,10 +2,12 @@ package com.api.naver.smartstore.service.template.common;
 
 import com.api.naver.smartstore.service.template.enumeration.ServiceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class FailResponse implements NaverCommonResponse {
+@Builder
+public class FailResponse {
     @JsonProperty("code")
     private String code;
     @JsonProperty("message")
@@ -14,9 +16,4 @@ public class FailResponse implements NaverCommonResponse {
     private String timestamp;
     @JsonProperty("traceId")
     private String traceId;
-
-    @Override
-    public ServiceType findServiceType() {
-        return ServiceType.FAIL_RESPONSE;
-    }
 }
