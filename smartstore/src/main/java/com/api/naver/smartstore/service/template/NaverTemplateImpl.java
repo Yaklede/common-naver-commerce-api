@@ -40,7 +40,6 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
     }
 
     private <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> void validation(T request, Class<R> response) {
-        System.out.println("검증기 시작");
         verifies.forEach(naverRequestVerify -> naverRequestVerify.verifyRequest(request));
         verifyServiceType(request, response);
     }
@@ -106,7 +105,6 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
 
     @Override
     public <T extends NaverRequestVerify> void addVerify(T request) {
-        System.out.println("add = " + request);
         this.verifies.add(request);
     }
 }

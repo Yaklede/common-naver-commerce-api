@@ -3,7 +3,6 @@ package com.api.naver.smartstore.service;
 import com.api.naver.smartstore.service.template.builder.FailResponseBuilder;
 import com.api.naver.smartstore.service.template.common.FailResponse;
 import com.api.naver.smartstore.service.template.common.NaverCommerceTemplate;
-import com.api.naver.smartstore.service.template.common.NaverCommonRequest;
 import com.api.naver.smartstore.service.template.common.NaverToken;
 import com.api.naver.smartstore.service.template.request.ProductOrderIdsRequest;
 import com.api.naver.smartstore.service.template.request.ProductOrdersRequest;
@@ -43,7 +42,6 @@ public class NaverApiService {
      */
     private NaverToken getNaverToken(String shoppingMall) {
         testDatabase.put("testMall",new NaverToken(clientId,clientSecret));
-        System.out.println("shoppingMall = " + shoppingMall);
         return testDatabase.get(shoppingMall);
     }
 
