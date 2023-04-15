@@ -1,8 +1,12 @@
 package com.api.naver.smartstore.service.template;
 
+import com.api.naver.smartstore.service.template.common.NaverCommerceTemplate;
+import com.api.naver.smartstore.service.template.common.NaverCommonRequest;
+import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
+import com.api.naver.smartstore.service.template.common.NaverToken;
 import com.api.naver.smartstore.service.template.crypto.CryptoUtils;
-import com.api.naver.smartstore.service.template.common.*;
 import com.api.naver.smartstore.service.template.exception.FailResponseException;
+import com.api.naver.smartstore.service.template.exception.RequestVerifyException;
 import com.api.naver.smartstore.service.template.response.TokenResponse;
 import com.api.naver.smartstore.service.template.verify.NaverRequestVerify;
 import org.springframework.http.*;
@@ -33,7 +37,10 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
             return restTemplate.exchange(request.findUrl(), request.findHttpMethod(), entity, response).getBody();
         } catch (HttpClientErrorException e) {
             throw new FailResponseException(e.getResponseBodyAsString());
-        } catch (Exception e) {
+        } catch (RequestVerifyException verifyException) {
+            throw verifyException;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("naver api 호출 도중 알 수 없는 에러가 발생했습니다.");
         }
