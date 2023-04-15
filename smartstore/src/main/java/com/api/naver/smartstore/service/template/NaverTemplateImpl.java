@@ -1,9 +1,9 @@
 package com.api.naver.smartstore.service.template;
 
-import com.api.naver.smartstore.service.template.common.NaverCommerceTemplate;
-import com.api.naver.smartstore.service.template.common.NaverCommonRequest;
-import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
-import com.api.naver.smartstore.service.template.common.NaverToken;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommerceTemplate;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonRequest;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonResponse;
+import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import com.api.naver.smartstore.service.template.crypto.CryptoUtils;
 import com.api.naver.smartstore.service.template.exception.FailResponseException;
 import com.api.naver.smartstore.service.template.exception.RequestVerifyException;

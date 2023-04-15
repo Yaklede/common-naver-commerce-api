@@ -1,8 +1,8 @@
 package com.api.naver.smartstore.advice;
 
 
-import com.api.naver.smartstore.service.template.common.ApplicationResponse;
-import com.api.naver.smartstore.service.template.common.ApplicationResult;
+import com.api.naver.smartstore.service.template.common.dto.ApplicationResponse;
+import com.api.naver.smartstore.service.template.common.dto.ApplicationResult;
 import com.api.naver.smartstore.service.template.exception.RequestVerifyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

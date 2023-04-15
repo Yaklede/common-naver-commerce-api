@@ -1,4 +1,4 @@
-package com.api.naver.smartstore.service.template.common;
+package com.api.naver.smartstore.service.template.common.interfaces;
 
 import com.api.naver.smartstore.service.template.enumeration.ServiceType;
 

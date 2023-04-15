@@ -1,6 +1,6 @@
 package com.api.naver.smartstore.service.template.crypto;
 
-import com.api.naver.smartstore.service.template.common.NaverToken;
+import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import org.apache.commons.lang3.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 

@@ -1,9 +1,9 @@
 package com.api.naver.smartstore.service;
 
 import com.api.naver.smartstore.service.template.builder.FailResponseBuilder;
-import com.api.naver.smartstore.service.template.common.FailResponse;
-import com.api.naver.smartstore.service.template.common.NaverCommerceTemplate;
-import com.api.naver.smartstore.service.template.common.NaverToken;
+import com.api.naver.smartstore.service.template.common.dto.FailResponse;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommerceTemplate;
+import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import com.api.naver.smartstore.service.template.request.ProductOrderIdsRequest;
 import com.api.naver.smartstore.service.template.request.ProductOrdersRequest;
 import com.api.naver.smartstore.service.template.response.ProductOrders.ProductOrdersResponse;

@@ -1,9 +1,7 @@
 package com.api.naver.smartstore.service.template.request;
 
-import com.api.naver.smartstore.service.template.common.NaverCommonRequest;
-import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonRequest;
 import com.api.naver.smartstore.service.template.enumeration.ServiceType;
-import com.api.naver.smartstore.service.template.response.ProductOrders.ProductOrdersResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

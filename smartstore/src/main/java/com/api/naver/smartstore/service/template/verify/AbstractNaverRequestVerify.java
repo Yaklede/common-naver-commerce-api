@@ -1,6 +1,6 @@
 package com.api.naver.smartstore.service.template.verify;
 
-import com.api.naver.smartstore.service.template.common.NaverCommonRequest;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonRequest;
 import com.api.naver.smartstore.service.template.exception.RequestVerifyException;
 
 import java.lang.reflect.Field;

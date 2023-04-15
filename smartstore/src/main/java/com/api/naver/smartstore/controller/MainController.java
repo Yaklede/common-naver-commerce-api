@@ -2,12 +2,12 @@ package com.api.naver.smartstore.controller;
 
 
 import com.api.naver.smartstore.service.NaverApiService;
-import com.api.naver.smartstore.service.template.common.*;
+import com.api.naver.smartstore.service.template.common.dto.ApplicationResponse;
+import com.api.naver.smartstore.service.template.common.dto.ApplicationResult;
+import com.api.naver.smartstore.service.template.common.dto.FailResponse;
 import com.api.naver.smartstore.service.template.exception.FailResponseException;
-import com.api.naver.smartstore.service.template.exception.RequestVerifyException;
 import com.api.naver.smartstore.service.template.request.ProductOrderIdsRequest;
 import com.api.naver.smartstore.service.template.request.ProductOrdersRequest;
-import com.api.naver.smartstore.service.template.response.ProductOrders.ProductOrderResponse;
 import com.api.naver.smartstore.service.template.response.ProductOrders.ProductOrdersResponse;
 import com.api.naver.smartstore.service.template.response.productOrderIds.ProductOrderIdsResponse;
 import org.springframework.http.HttpStatus;

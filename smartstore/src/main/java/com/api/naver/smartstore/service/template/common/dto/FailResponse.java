@@ -1,6 +1,5 @@
-package com.api.naver.smartstore.service.template.common;
+package com.api.naver.smartstore.service.template.common.dto;
 
-import com.api.naver.smartstore.service.template.enumeration.ServiceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;

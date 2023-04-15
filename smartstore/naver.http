@@ -1,0 +1,12 @@
+###
+GET localhost:8080/order/testMall?orderId=
+
+###
+POST localhost:8080/orderDetail/testMall
+Content-Type: application/json
+
+{
+  "productOrderIds" : [
+    "2023041245655891"
+  ]
+}

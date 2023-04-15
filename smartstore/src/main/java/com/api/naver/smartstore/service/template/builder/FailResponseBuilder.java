@@ -1,6 +1,6 @@
 package com.api.naver.smartstore.service.template.builder;
 
-import com.api.naver.smartstore.service.template.common.FailResponse;
+import com.api.naver.smartstore.service.template.common.dto.FailResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 

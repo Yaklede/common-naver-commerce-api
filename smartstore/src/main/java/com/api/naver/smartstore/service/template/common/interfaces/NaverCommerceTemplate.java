@@ -1,9 +1,7 @@
-package com.api.naver.smartstore.service.template.common;
+package com.api.naver.smartstore.service.template.common.interfaces;
 
+import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import com.api.naver.smartstore.service.template.verify.NaverRequestVerify;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import java.lang.reflect.InvocationTargetException;
 
 public interface NaverCommerceTemplate {
     <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> R execute(NaverToken token, T reqeust, Class<R> response);

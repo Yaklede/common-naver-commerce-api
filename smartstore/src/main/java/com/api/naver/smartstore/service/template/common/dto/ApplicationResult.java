@@ -1,4 +1,4 @@
-package com.api.naver.smartstore.service.template.common;
+package com.api.naver.smartstore.service.template.common.dto;
 
 import lombok.Builder;
 import lombok.Data;

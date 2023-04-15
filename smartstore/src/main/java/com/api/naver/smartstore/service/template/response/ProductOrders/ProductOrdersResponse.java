@@ -1,8 +1,7 @@
 package com.api.naver.smartstore.service.template.response.ProductOrders;
 
-import com.api.naver.smartstore.service.template.common.NaverCommonResponse;
+import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonResponse;
 import com.api.naver.smartstore.service.template.enumeration.ServiceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
