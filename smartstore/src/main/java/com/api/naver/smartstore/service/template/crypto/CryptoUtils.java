@@ -1,4 +1,4 @@
-package com.api.naver.smartstore.crypto;
+package com.api.naver.smartstore.service.template.crypto;
 
 import com.api.naver.smartstore.service.template.common.NaverToken;
 import org.apache.commons.lang3.StringUtils;
