@@ -9,6 +9,4 @@ public interface NaverCommonRequest<T> {
     HttpMethod findHttpMethod();
     String findUrl();
     default T findBody() {return null;}
-
-    Class<? extends NaverCommonResponse> findResponseType();
 }
