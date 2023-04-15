@@ -1,10 +1,10 @@
 package com.api.naver.smartstore.service.template;
 
-import com.api.naver.smartstore.crypto.CryptoUtils;
+import com.api.naver.smartstore.service.template.crypto.CryptoUtils;
 import com.api.naver.smartstore.service.template.common.*;
+import com.api.naver.smartstore.service.template.exception.FailResponseException;
 import com.api.naver.smartstore.service.template.response.TokenResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.api.naver.smartstore.service.template.verify.NaverRequestVerify;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -12,39 +12,52 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 public class NaverTemplateImpl implements NaverCommerceTemplate {
-
-    private final String clientId = "2NcVTI6acZnnWZcjbZNsD4";
-    private final String clientSecret = "$2a$04$69VomQ67OctjHL1LuJGBPO";
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-    public NaverTemplateImpl(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public NaverTemplateImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
     }
 
-    private final Map<String, NaverToken> store = new HashMap<>();
+    private final List<NaverRequestVerify> verifies = new ArrayList<>();
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T extends NaverCommonRequest> NaverCommonResponse execute(String shoppingMallName, T request) throws JsonProcessingException {
+    public <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> R execute(NaverToken token, T request, Class<R> response) {
         try {
-            HttpEntity<T> entity = makeHttpEntity(shoppingMallName, request);
-            return (NaverCommonResponse) restTemplate.exchange(request.findUrl(), request.findHttpMethod(), entity, request.findResponseType()).getBody();
+            validation(request, response);
+            HttpEntity<T> entity = makeHttpEntity(token, request);
+            return restTemplate.exchange(request.findUrl(), request.findHttpMethod(), entity, response).getBody();
         } catch (HttpClientErrorException e) {
-            return objectMapper.readValue(e.getResponseBodyAsString(), FailResponse.class);
+            throw new FailResponseException(e.getResponseBodyAsString());
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            throw new IllegalArgumentException("naver api 호출 도중 알 수 없는 에러가 발생했습니다.");
         }
     }
 
-    private <T extends NaverCommonRequest<T>> HttpEntity<?> makeHttpEntity(String shoppingMallName, T request) {
-        HttpHeaders headers = makeBaseHeader(getToken(shoppingMallName));
+    private <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> void validation(T request, Class<R> response) {
+        System.out.println("검증기 시작");
+        verifies.forEach(naverRequestVerify -> naverRequestVerify.verifyRequest(request));
+        verifyServiceType(request, response);
+    }
+
+    private <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> void verifyServiceType(T request, Class<R> response) {
+        try {
+            if (request.findServiceType() != response.getDeclaredConstructor().newInstance().findServiceType()) {
+                throw new IllegalArgumentException("서비스 타입이 일치하지 않습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("알 수 없는 에러 발생");
+        }
+    }
+
+    private <T extends NaverCommonRequest<?>> HttpEntity<T> makeHttpEntity(NaverToken token, T request) {
+        HttpHeaders headers = makeBaseHeader(getToken(token));
         if (request.findBody() != null) {
             return new HttpEntity<>(request, headers);
         } else {
@@ -59,19 +72,16 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
         return headers;
     }
 
-    private String getToken(String shoppingMallName) {
-        store.put("mall", new NaverToken(clientId, clientSecret));
-        NaverToken naverToken = store.get(shoppingMallName);
-
+    private String getToken(NaverToken token) {
         Long timestamp = System.currentTimeMillis();
-        String sign = CryptoUtils.issueClientSecretSign(naverToken, timestamp);
+        String sign = CryptoUtils.issueClientSecretSign(token, timestamp);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
         String getTokenUrl = "https://api.commerce.naver.com/external/v1/oauth2/token";
 
         UriComponents build = UriComponentsBuilder.fromHttpUrl(getTokenUrl)
-                .queryParam("client_id", naverToken.getClientId())
+                .queryParam("client_id", token.getClientId())
                 .queryParam("timestamp", timestamp)
                 .queryParam("client_secret_sign", sign)
                 .queryParam("grant_type", "client_credentials")
@@ -79,12 +89,24 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
                 .build();
         try {
             ResponseEntity<TokenResponse> exchange = restTemplate.exchange(build.toString(), HttpMethod.POST, entity, TokenResponse.class);
-            return exchange.getBody().getAccessToken();
+            return verifyTokenKey(exchange);
         } catch (HttpClientErrorException e) {
-            return e.getResponseBodyAsString();
+            throw new FailResponseException(e.getResponseBodyAsString());
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    private String verifyTokenKey(ResponseEntity<TokenResponse> exchange) {
+        String accessToken = Objects.requireNonNull(exchange.getBody()).getAccessToken();
+        if (accessToken.isEmpty()) throw new IllegalArgumentException("토큰값이 비었습니다. 해당 몰의 clientId 또는 clientSecret 확인해주세요");
+        return accessToken;
+    }
+
+    @Override
+    public <T extends NaverRequestVerify> void addVerify(T request) {
+        System.out.println("add = " + request);
+        this.verifies.add(request);
     }
 }
