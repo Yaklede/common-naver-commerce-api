@@ -5,5 +5,5 @@ import com.api.naver.smartstore.service.template.verify.NaverRequestVerify;
 
 public interface NaverCommerceTemplate {
     <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> R execute(NaverToken token, T reqeust, Class<R> response);
-    <T extends NaverRequestVerify> void addVerify(T request);
+    <T extends NaverRequestVerify> NaverCommerceTemplate addVerify(T request);
 }

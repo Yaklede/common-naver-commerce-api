@@ -28,13 +28,15 @@ public class NaverApiService {
     }
 
     public ProductOrderIdsResponse getProductOrderIds(String shoppingMall, ProductOrderIdsRequest productOrderIdsRequest) {
-        naverCommerceTemplate.addVerify(new StringVerify());
-        return naverCommerceTemplate.execute(getNaverToken(shoppingMall), productOrderIdsRequest, ProductOrderIdsResponse.class);
+        return naverCommerceTemplate
+                .addVerify(new StringVerify())
+                .execute(getNaverToken(shoppingMall), productOrderIdsRequest, ProductOrderIdsResponse.class);
     }
 
     public ProductOrdersResponse getProductOrder(String shoppingMall, ProductOrdersRequest productOrdersRequest) {
-        naverCommerceTemplate.addVerify(new ArrayStringVerify());
-        return naverCommerceTemplate.execute(getNaverToken(shoppingMall), productOrdersRequest, ProductOrdersResponse.class);
+        return naverCommerceTemplate
+                .addVerify(new ArrayStringVerify())
+                .execute(getNaverToken(shoppingMall), productOrdersRequest, ProductOrdersResponse.class);
     }
 
     /**

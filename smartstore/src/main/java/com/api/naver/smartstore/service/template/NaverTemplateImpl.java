@@ -111,7 +111,8 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
     }
 
     @Override
-    public <T extends NaverRequestVerify> void addVerify(T request) {
+    public <T extends NaverRequestVerify> NaverCommerceTemplate addVerify(T request) {
         this.verifies.add(request);
+        return this;
     }
 }
