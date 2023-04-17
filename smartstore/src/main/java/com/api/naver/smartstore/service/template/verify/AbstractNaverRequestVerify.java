@@ -18,11 +18,8 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            if (settingVerifyType().isInstance(data)) {
-                if (!verify(data)) throw new RequestVerifyException();
-            }
+            if (!verify(data)) throw new RequestVerifyException();
         }
     }
-    public abstract Class<V> settingVerifyType();
     public abstract Boolean verify(V data);
 }
