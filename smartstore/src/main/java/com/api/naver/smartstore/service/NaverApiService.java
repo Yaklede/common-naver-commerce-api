@@ -9,6 +9,7 @@ import com.api.naver.smartstore.service.template.request.ProductOrdersRequest;
 import com.api.naver.smartstore.service.template.response.ProductOrders.ProductOrdersResponse;
 import com.api.naver.smartstore.service.template.response.productOrderIds.ProductOrderIdsResponse;
 import com.api.naver.smartstore.service.template.verify.ArrayStringVerify;
+import com.api.naver.smartstore.service.template.verify.IntegerVerify;
 import com.api.naver.smartstore.service.template.verify.StringVerify;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NaverApiService {
     private final NaverCommerceTemplate naverCommerceTemplate;
     private final FailResponseBuilder failResponseBuilder;
-    private final String clientId = "2NcVTI6acZnnWZcjbZNsD4";
-    private final String clientSecret = "$2a$04$69VomQ67OctjHL1LuJGBPO";
     private static Map<String, NaverToken> testDatabase = new ConcurrentHashMap<>();
     public NaverApiService(NaverCommerceTemplate naverCommerceTemplate, FailResponseBuilder failResponseBuilder) {
         this.naverCommerceTemplate = naverCommerceTemplate;
@@ -43,7 +42,9 @@ public class NaverApiService {
      * 상용에서는 해당 데이터가 저장된 DB에서 꺼내야함
      */
     private NaverToken getNaverToken(String shoppingMall) {
-        testDatabase.put("testMall",new NaverToken(clientId,clientSecret));
+        String clientSecret = "$2a$04$69VomQ67OctjHL1LuJGBPO";
+        String clientId = "2NcVTI6acZnnWZcjbZNsD4";
+        testDatabase.put("testMall",new NaverToken(clientId, clientSecret));
         return testDatabase.get(shoppingMall);
     }
 
