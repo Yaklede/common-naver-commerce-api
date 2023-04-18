@@ -15,11 +15,17 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
             try {
                 data = (V) declaredField.get(request);
                 if (data == null) throw new RequestVerifyException();
+            } catch (RequestVerifyException requestVerifyException) {
+                throw requestVerifyException;
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException("검증 도중 에러가 발생하였습니다.");
             }
-            if (!verify(data)) throw new RequestVerifyException();
+
+            if (settingVerifyType().isInstance(data)) {
+                if (!verify(data)) throw new RequestVerifyException();
+            }
         }
     }
+    public abstract Class<V> settingVerifyType();
     public abstract Boolean verify(V data);
 }
