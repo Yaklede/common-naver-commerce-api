@@ -1,9 +1,9 @@
 package com.api.naver.smartstore.service.template;
 
+import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import com.api.naver.smartstore.service.template.common.interfaces.NaverCommerceTemplate;
 import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonRequest;
 import com.api.naver.smartstore.service.template.common.interfaces.NaverCommonResponse;
-import com.api.naver.smartstore.service.template.common.dto.NaverToken;
 import com.api.naver.smartstore.service.template.crypto.CryptoUtils;
 import com.api.naver.smartstore.service.template.exception.FailResponseException;
 import com.api.naver.smartstore.service.template.exception.RequestVerifyException;
@@ -23,6 +23,7 @@ import java.util.Objects;
 @Component
 public class NaverTemplateImpl implements NaverCommerceTemplate {
     private final RestTemplate restTemplate;
+
     public NaverTemplateImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -37,10 +38,11 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
             return restTemplate.exchange(request.findUrl(), request.findHttpMethod(), entity, response).getBody();
         } catch (HttpClientErrorException e) {
             throw new FailResponseException(e.getResponseBodyAsString());
+        } catch (ClassCastException classCastException) {
+            throw new IllegalArgumentException("Request가 검증 할 수 없는 타입입니다. Verify를 확인 해 주세요.");
         } catch (RequestVerifyException verifyException) {
             throw verifyException;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("naver api 호출 도중 알 수 없는 에러가 발생했습니다.");
         }
@@ -106,7 +108,8 @@ public class NaverTemplateImpl implements NaverCommerceTemplate {
 
     private String verifyTokenKey(ResponseEntity<TokenResponse> exchange) {
         String accessToken = Objects.requireNonNull(exchange.getBody()).getAccessToken();
-        if (accessToken.isEmpty()) throw new IllegalArgumentException("토큰값이 비었습니다. 해당 몰의 clientId 또는 clientSecret 확인해주세요");
+        if (accessToken.isEmpty())
+            throw new IllegalArgumentException("토큰값이 비었습니다. 해당 몰의 clientId 또는 clientSecret 확인해주세요");
         return accessToken;
     }
 
