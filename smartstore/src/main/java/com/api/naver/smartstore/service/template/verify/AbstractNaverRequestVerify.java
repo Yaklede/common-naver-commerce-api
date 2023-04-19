@@ -26,7 +26,7 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
             try {
                 if (verifyList.get(verifyCount).getClass().isInstance(data)) {
                     if (!verify(data)) {
-                        verifyList.clear();
+                        clearFieldData();
                         throw new RequestVerifyException();
                     }
                 }
@@ -34,7 +34,12 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
                 verifyCount++;
             }
         }
+        clearFieldData();
+    }
+
+    private void clearFieldData() {
         verifyList.clear();
+        verifyCount = 0;
     }
 
     /**
