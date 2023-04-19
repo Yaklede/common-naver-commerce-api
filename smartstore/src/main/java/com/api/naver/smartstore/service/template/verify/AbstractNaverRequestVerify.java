@@ -5,9 +5,8 @@ import com.api.naver.smartstore.service.template.exception.RequestVerifyExceptio
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerify {
     private List<V> verifyList = new ArrayList<>();
     private int verifyCount = 0;
@@ -21,7 +20,7 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
      */
     @Override
     public <T extends NaverCommonRequest<?>> void verifyRequest(T request) {
-        gerRequestFieldData(request);
+        getRequestFieldData(request);
         for (V data : verifyList) {
             try {
                 if (verifyList.get(verifyCount).getClass().isInstance(data)) {
@@ -49,7 +48,7 @@ public abstract class AbstractNaverRequestVerify<V> implements NaverRequestVerif
      * @param <T>     request의 타입
      */
     @SuppressWarnings("unchecked")
-    private <T extends NaverCommonRequest<?>> void gerRequestFieldData(T request) {
+    private <T extends NaverCommonRequest<?>> void getRequestFieldData(T request) {
         Field[] declaredFields = request.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
