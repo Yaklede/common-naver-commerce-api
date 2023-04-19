@@ -17,7 +17,7 @@ public interface NaverCommerceTemplate {
      * @param <R>      응답 객체의 타입
      * @return API 호출 결과에 대한 응답 객체
      */
-    <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> R execute(NaverToken token, T reqeust, Class<R> response);
+    <T extends NaverCommonRequest<?>, R extends NaverCommonResponse> R execute(NaverToken token, T request, Class<R> response);
 
     /**
      * 네이버 API 호출 전에 요청 객체를 검증하는 검증기를 추가합니다.
@@ -26,5 +26,5 @@ public interface NaverCommerceTemplate {
      * @param <T>      검증기 객체의 타입
      * @return 검증기를 추가한 템플릿 객체
      */
-    <T extends NaverRequestVerify> NaverCommerceTemplate addVerify(T request);
+    <T extends NaverRequestVerify> NaverCommerceTemplate addVerify(T verifier);
 }
